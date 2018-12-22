@@ -14,7 +14,9 @@
     <script src="js/bootstrap-table.min.js"></script>
   </head>
   <body onload="loadPacket()">
-    <header class="card"><h1 class="text-center">Dairy Database Viewer</h1></header>
+    <header class="card">
+      <h1 class="text-center">Dairy Database Viewer</h1>
+    </header>
     <div class="container-fluid">
       <br />
       <div class="row">
@@ -29,11 +31,11 @@
         <div class="col-md-6"><h4 class="text-center">Packet Table</h4></div>
         <div class="col-md-3">
           <button
-          type="button"
-          class="btn btn-outline-primary my-btn"
-          onclick="showCreateModal()"
-        >
-        Create
+            type="button"
+            class="btn btn-outline-primary my-btn"
+            onclick="showCreateModal()"
+          >
+            Create
           </button>
         </div>
       </div>
@@ -42,7 +44,6 @@
         <table
           id="tblPacket"
           data-pagination="true"
-          
           class="table table-hover table-bordered"
         >
           <thead>
@@ -73,12 +74,15 @@
                 <label>Date:</label>
                 <input type="text" class="form-control" id="txtDates" />
                 <label>Packets Manufactured:</label>
-                <input type="text" class="form-control" id="txtPackets_manufactured" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtPackets_manufactured"
+                />
                 <label>Cost/pack (in Rs.):</label>
                 <input type="text" class="form-control" id="txtCost_per_pack" />
                 <label>Total Cost (in Rs.):</label>
                 <input type="text" class="form-control" id="txtTotal_cost" />
-                
               </div>
             </div>
 
@@ -113,9 +117,9 @@
     //   })
     // }
 
-    let dataResults;
-    let newMoney=false;
-     async function loadPacket() {
+    let dataResults
+    let newMoney = false
+    async function loadPacket() {
       $.getJSON("http://localhost:30000/api/packet/show", function(
         data,
         status
@@ -124,7 +128,7 @@
           if (data == null) {
             console.log("No records found")
           } else {
-            dataResults=data.queryResult;
+            dataResults = data.queryResult
             let tbody = "<tbody>"
             $.each(data.queryResult, function(key, value) {
               tbody += "<tr>"
@@ -133,9 +137,11 @@
               tbody += "<td>" + value.PACKETS_MANUFACTURED + "</td>"
               tbody += "<td>" + value.COST_PER_PACK + "</td>"
               tbody += "<td>" + value.TOTAL_COST + "</td>"
-              
+
               tbody +=
-                "<td><button class='btn btn-link' onclick='editPacket(" + value.TOTAL_COST +")'>Edit</button>&nbsp;|&nbsp;"+
+                "<td><button class='btn btn-link' onclick='editPacket(" +
+                value.TOTAL_COST +
+                ")'>Edit</button>&nbsp;|&nbsp;" +
                 "<button class='btn btn-link' onclick='delPacket(" +
                 value.TOTAL_COST +
                 ")'>Delete</button></td>"
@@ -162,45 +168,45 @@
         //     window.location.reload()
         //   }
         // })
-        $.getJSON("http://localhost:30000/api/packet/remove/"+id, function(
-        data,
-        status
-      ) {
-        window.location.reload()
-      })
+        $.getJSON("http://localhost:30000/api/packet/remove/" + id, function(
+          data,
+          status
+        ) {
+          window.location.reload()
+        })
       }
     }
 
-    async function editPacket(id){
-      let packet;
-      for(let i=0;i<dataResults.length;i++){
-        if(dataResults[i].TOTAL_COST===id){
-          packet=dataResults[i];
-          break;
+    async function editPacket(id) {
+      let packet
+      for (let i = 0; i < dataResults.length; i++) {
+        if (dataResults[i].TOTAL_COST === id) {
+          packet = dataResults[i]
+          break
         }
       }
       $("#txtSl_no").val(packet.SL_NO)
-      
+
       $("#txtDates").val(packet.DATES)
-      
+
       $("#txtPackets_manufactured").val(packet.PACKETS_MANUFACTURED)
-       $("#txtCost_per_pack").val(packet.COST_PER_PACK)
-       $("#txtTotal_cost").val(packet.TOTAL_COST)
-       $("#txtTotal_cost").attr("disabled","disabled");
-      newPacket=false;
+      $("#txtCost_per_pack").val(packet.COST_PER_PACK)
+      $("#txtTotal_cost").val(packet.TOTAL_COST)
+      $("#txtTotal_cost").attr("disabled", "disabled")
+      newPacket = false
       $("#createModal").modal("show")
     }
 
-    function showCreateModal(){
-      $("#txtSl_no").removeAttr("disabled");
+    function showCreateModal() {
+      $("#txtSl_no").removeAttr("disabled")
       $("#txtSl_no").val("")
       $("#txtDates").val("")
       $("#txtPacks_manufactured").val("")
-       $("#txtCost_per_pack").val("")
-       $("#txtTotal_cost").val("")
-       
-       newPacket=true;
-       $("#createModal").modal("show")
+      $("#txtCost_per_pack").val("")
+      $("#txtTotal_cost").val("")
+
+      newPacket = true
+      $("#createModal").modal("show")
     }
 
     async function CreatePacket() {
@@ -210,12 +216,10 @@
         Packets_manufactured: $("#txtPackets_manufactured").val(),
         Cost_per_pack: $("#txtCost_per_pack").val(),
         Total_cost: $("#txtTotal_cost").val()
-        
       }
-      if(newPacket){
+      if (newPacket) {
         PostCreateRequest(packet)
-      }
-      else{
+      } else {
         PostEditRequest(packet)
       }
       $("#createModal").modal("hide")
@@ -225,16 +229,16 @@
         data,
         status
       ) {
-        
-          window.location.reload()
-        
-      })
-    }
-    async function PostEditRequest(packet){
-      $.post("http://localhost:30000/api/packet/edit",packet,function(data,status){
         window.location.reload()
       })
     }
-
+    async function PostEditRequest(packet) {
+      $.post("http://localhost:30000/api/packet/edit", packet, function(
+        data,
+        status
+      ) {
+        window.location.reload()
+      })
+    }
   </script>
 </html>

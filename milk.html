@@ -14,7 +14,9 @@
     <script src="js/bootstrap-table.min.js"></script>
   </head>
   <body onload="loadMilk()">
-    <header class="card"><h1 class="text-center">Dairy Database Viewer</h1></header>
+    <header class="card">
+      <h1 class="text-center">Dairy Database Viewer</h1>
+    </header>
     <div class="container-fluid">
       <br />
       <div class="row">
@@ -29,10 +31,11 @@
         <div class="col-md-6"><h4 class="text-center">Milk Table</h4></div>
         <div class="col-md-3">
           <button
-          type="button"
-          class="btn btn-outline-primary my-btn"
-          onclick="showCreateModal()" >
-          Create
+            type="button"
+            class="btn btn-outline-primary my-btn"
+            onclick="showCreateModal()"
+          >
+            Create
           </button>
         </div>
       </div>
@@ -41,7 +44,6 @@
         <table
           id="tblMilk"
           data-pagination="true"
-          
           class="table table-hover table-bordered"
         >
           <thead>
@@ -69,12 +71,19 @@
                 <label>Date:</label>
                 <input type="text" class="form-control" id="txtDates" />
                 <label>Total Milk Input(in ltrs.):</label>
-                <input type="text" class="form-control" id="txtTotal_milk_input" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtTotal_milk_input"
+                />
                 <label>Cost/ltr of Milk(in Rs.):</label>
-                <input type="text" class="form-control" id="txtCost_per_ltr_of_milk" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtCost_per_ltr_of_milk"
+                />
                 <label>Total Payment(in Rs.):</label>
                 <input type="text" class="form-control" id="txtTotal_payment" />
-                
               </div>
             </div>
 
@@ -109,18 +118,15 @@
     //   })
     // }
 
-    let dataResults;
-    let newMilk=false;
-     async function loadMilk() {
-      $.getJSON("http://localhost:30000/api/milk/show", function(
-        data,
-        status
-      ) {
+    let dataResults
+    let newMilk = false
+    async function loadMilk() {
+      $.getJSON("http://localhost:30000/api/milk/show", function(data, status) {
         if (status == "success") {
           if (data == null) {
             console.log("No records found")
           } else {
-            dataResults=data.queryResult;
+            dataResults = data.queryResult
             let tbody = "<tbody>"
             $.each(data.queryResult, function(key, value) {
               tbody += "<tr>"
@@ -129,10 +135,12 @@
               tbody += "<td>" + value.COST_PER_LTR_OF_MILK + "</td>"
               tbody += "<td>" + value.TOTAL_PAYMENT + "</td>"
               tbody +=
-                "<td><button class='btn btn-link' onclick='editMilk(" + value.DATES +")'>Edit</button>&nbsp;|&nbsp;"+
-                "<button class='btn btn-link' onclick='delMilk(" +
+                "<td><button class='btn btn-link' onclick='editMilk(\"" +
                 value.DATES +
-                ")'>Delete</button></td>"
+                "\")'>Edit</button>&nbsp;|&nbsp;" +
+                "<button class='btn btn-link' onclick='delMilk(\"" +
+                value.DATES +
+                "\")'>Delete</button></td>"
               tbody += "</tr>"
             })
             tbody += "</tbody>"
@@ -156,42 +164,42 @@
         //     window.location.reload()
         //   }
         // })
-        $.getJSON("http://localhost:30000/api/milk/remove/"+id, function(
-        data,
-        status
-      ) {
-        window.location.reload()
-      })
+        $.getJSON("http://localhost:30000/api/milk/remove/" + id, function(
+          data,
+          status
+        ) {
+          window.location.reload()
+        })
       }
     }
 
-    async function editMilk(id){
-      let milk;
-      for(let i=0;i<dataResults.length;i++){
-        if(dataResults[i].DATES===id){
-          milk=dataResults[i];
-          break;
+    async function editMilk(id) {
+      let milk
+      for (let i = 0; i < dataResults.length; i++) {
+        if (dataResults[i].DATES === id) {
+          milk = dataResults[i]
+          break
         }
       }
       $("#txtDates").val(milk.DATES)
-      $("#txtDates").attr("disabled","disabled");
+      $("#txtDates").attr("disabled", "disabled")
       $("#txtTotal_milk_input").val(milk.TOTAL_MILK_INPUT)
       $("#txtCost_per_ltr_of_milk").val(milk.COST_PER_LTR_OF_MILK)
-       $("#txtTotal_payment").val(milk.TOTAL_PAYMENT)
-       
-      newMilk=false;
+      $("#txtTotal_payment").val(milk.TOTAL_PAYMENT)
+
+      newMilk = false
       $("#createModal").modal("show")
     }
 
-    function showCreateModal(){
-      $("#txtDates").removeAttr("disabled");
+    function showCreateModal() {
+      $("#txtDates").removeAttr("disabled")
       $("#txtDates").val("")
       $("#txtTotal_milk_input").val("")
       $("#txtCost_per_ltr_of_milk").val("")
-       $("#txtTotal_payment").val("")
-       
-       newMilk=true;
-       $("#createModal").modal("show")
+      $("#txtTotal_payment").val("")
+
+      newMilk = true
+      $("#createModal").modal("show")
     }
 
     async function CreateMilk() {
@@ -200,12 +208,10 @@
         Total_milk_input: $("#txtTotal_milk_input").val(),
         Cost_per_ltr_of_milk: $("#txtCost_per_ltr_of_milk").val(),
         Total_payment: $("#txtTotal_payment").val()
-        
       }
-      if(newMilk){
+      if (newMilk) {
         PostCreateRequest(milk)
-      }
-      else{
+      } else {
         PostEditRequest(milk)
       }
       $("#createModal").modal("hide")
@@ -215,16 +221,16 @@
         data,
         status
       ) {
-        
-          window.location.reload()
-        
-      })
-    }
-    async function PostEditRequest(milk){
-      $.post("http://localhost:30000/api/milk/edit",milk,function(data,status){
         window.location.reload()
       })
     }
-
+    async function PostEditRequest(milk) {
+      $.post("http://localhost:30000/api/milk/edit", milk, function(
+        data,
+        status
+      ) {
+        window.location.reload()
+      })
+    }
   </script>
 </html>

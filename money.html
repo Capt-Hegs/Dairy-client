@@ -14,7 +14,9 @@
     <script src="js/bootstrap-table.min.js"></script>
   </head>
   <body onload="loadMoney()">
-    <header class="card"><h1 class="text-center">Dairy Database Viewer</h1></header>
+    <header class="card">
+      <h1 class="text-center">Dairy Database Viewer</h1>
+    </header>
     <div class="container-fluid">
       <br />
       <div class="row">
@@ -29,12 +31,12 @@
         <div class="col-md-6"><h4 class="text-center">Money Table</h4></div>
         <div class="col-md-3">
           <button
-          type="button"
-          class="btn btn-outline-primary my-btn"
-          onclick="showCreateModal()"
-        >
-          Create
-        </button>
+            type="button"
+            class="btn btn-outline-primary my-btn"
+            onclick="showCreateModal()"
+          >
+            Create
+          </button>
         </div>
       </div>
       <br />
@@ -42,17 +44,22 @@
         <table
           id="tblMoney"
           data-pagination="true"
-          
           class="table table-hover table-bordered"
         >
           <thead>
             <th data-field="SL_NO">Sl.No</th>
-            <th data-field="DATES">&nbsp; Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
+            <th data-field="DATES">
+              &nbsp; Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </th>
             <th data-field="PACKETS_PROCESSED">Packs Processed</th>
             <th data-field="COST_PER_PACKET">Cost/pack (in Rs.)</th>
             <th data-field="TOTAL_INCOMING">Total Incoming (in Rs.)</th>
-            <th data-field="TOTAL_PAYMENT_FOR_MILK">Total Payment for Milk (in Rs.)</th>
-            <th data-field="TOTAL_PAYMENT_FOR_PACKETS">Total Payment for Packets (in Rs.)</th>
+            <th data-field="TOTAL_PAYMENT_FOR_MILK">
+              Total Payment for Milk (in Rs.)
+            </th>
+            <th data-field="TOTAL_PAYMENT_FOR_PACKETS">
+              Total Payment for Packets (in Rs.)
+            </th>
             <th data-field="TOTAL_OUTGOING">Total Outgoing (in Rs.)</th>
             <th data-field="PROFIT">Profit &nbsp;&nbsp;(in Rs.)</th>
           </thead>
@@ -78,17 +85,37 @@
                 <label>Date:</label>
                 <input type="text" class="form-control" id="txtDates" />
                 <label>Packs Processed:</label>
-                <input type="text" class="form-control" id="txtPacks_processed" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtPacks_processed"
+                />
                 <label>Cost/pack (in Rs.):</label>
                 <input type="text" class="form-control" id="txtCost_per_pack" />
                 <label>Total Incoming (in Rs.):</label>
-                <input type="text" class="form-control" id="txtTotal_incoming" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtTotal_incoming"
+                />
                 <label>Total Payment for Milk (in Rs.):</label>
-                <input type="text" class="form-control" id="txtTotal_payment_for_milk" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtTotal_payment_for_milk"
+                />
                 <label>Total Payment for Packets (in Rs.):</label>
-                <input type="text" class="form-control" id="txtTotal_payment_for_packets" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtTotal_payment_for_packets"
+                />
                 <label>Total Outgoing (in Rs.):</label>
-                <input type="text" class="form-control" id="txtTotal_outgoing" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="txtTotal_outgoing"
+                />
                 <label>Profit (in Rs.):</label>
                 <input type="text" class="form-control" id="txtProfit" />
               </div>
@@ -110,7 +137,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </body>
   <script>
@@ -126,9 +152,9 @@
     //   })
     // }
 
-    let dataResults;
-    let newMoney=false;
-     async function loadMoney() {
+    let dataResults
+    let newMoney = false
+    async function loadMoney() {
       $.getJSON("http://localhost:30000/api/money/show", function(
         data,
         status
@@ -137,7 +163,7 @@
           if (data == null) {
             console.log("No records found")
           } else {
-            dataResults=data.queryResult;
+            dataResults = data.queryResult
             let tbody = "<tbody>"
             $.each(data.queryResult, function(key, value) {
               tbody += "<tr>"
@@ -151,7 +177,9 @@
               tbody += "<td>" + value.TOTAL_OUTGOING + "</td>"
               tbody += "<td>" + value.PROFIT + "</td>"
               tbody +=
-                "<td><button class='btn btn-link' onclick='editMoney(" + value.SL_NO +")'>Edit</button>&nbsp;|&nbsp;"+
+                "<td><button class='btn btn-link' onclick='editMoney(" +
+                value.SL_NO +
+                ")'>Edit</button>&nbsp;|&nbsp;" +
                 "<button class='btn btn-link' onclick='delMoney(" +
                 value.SL_NO +
                 ")'>Delete</button></td>"
@@ -178,51 +206,51 @@
         //     window.location.reload()
         //   }
         // })
-        $.getJSON("http://localhost:30000/api/money/remove/"+id, function(
-        data,
-        status
-      ) {
-        window.location.reload()
-      })
+        $.getJSON("http://localhost:30000/api/money/remove/" + id, function(
+          data,
+          status
+        ) {
+          window.location.reload()
+        })
       }
     }
 
-    async function editMoney(id){
-      let money;
-      for(let i=0;i<dataResults.length;i++){
-        if(dataResults[i].SL_NO===id){
-          money=dataResults[i];
-          break;
+    async function editMoney(id) {
+      let money
+      for (let i = 0; i < dataResults.length; i++) {
+        if (dataResults[i].SL_NO === id) {
+          money = dataResults[i]
+          break
         }
       }
       $("#txtSl_no").val(money.SL_NO)
-      $("#txtSl_no").attr("disabled","disabled");
+      $("#txtSl_no").attr("disabled", "disabled")
       $("#txtDates").val(money.DATES)
-      
+
       $("#txtPacks_processed").val(money.PACKETS_PROCESSED)
-       $("#txtCost_per_pack").val(money.COST_PER_PACKET)
-       $("#txtTotal_incoming").val(money.TOTAL_INCOMING)
-       $("#txtTotal_payment_for_milk").val(money.TOTAL_PAYMENT_FOR_MILK)
-       $("#txtTotal_payment_for_packets").val(money.TOTAL_PAYMENT_FOR_PACKETS)
-       $("#txtTotal_outgoing").val(money.TOTAL_OUTGOING)
-       $("#txtProfit").val(money.PROFIT)
-      newMoney=false;
+      $("#txtCost_per_pack").val(money.COST_PER_PACKET)
+      $("#txtTotal_incoming").val(money.TOTAL_INCOMING)
+      $("#txtTotal_payment_for_milk").val(money.TOTAL_PAYMENT_FOR_MILK)
+      $("#txtTotal_payment_for_packets").val(money.TOTAL_PAYMENT_FOR_PACKETS)
+      $("#txtTotal_outgoing").val(money.TOTAL_OUTGOING)
+      $("#txtProfit").val(money.PROFIT)
+      newMoney = false
       $("#createModal").modal("show")
     }
 
-    function showCreateModal(){
-      $("#txtSl_no").removeAttr("disabled");
+    function showCreateModal() {
+      $("#txtSl_no").removeAttr("disabled")
       $("#txtSl_no").val("")
       $("#txtDates").val("")
       $("#txtPacks_processed").val("")
-       $("#txtCost_per_pack").val("")
-       $("#txtTotal_incoming").val("")
-       $("#txtTotal_payment_for_milk").val("")
-       $("#txtTotal_payment_for_packets").val("")
-       $("#txtTotal_outgoing").val("")
-       $("#txtProfit").val("")
-       newMoney=true;
-       $("#createModal").modal("show")
+      $("#txtCost_per_pack").val("")
+      $("#txtTotal_incoming").val("")
+      $("#txtTotal_payment_for_milk").val("")
+      $("#txtTotal_payment_for_packets").val("")
+      $("#txtTotal_outgoing").val("")
+      $("#txtProfit").val("")
+      newMoney = true
+      $("#createModal").modal("show")
     }
 
     async function CreateMoney() {
@@ -237,10 +265,9 @@
         Total_outgoing: $("#txtTotal_outgoing").val(),
         Profit: $("#txtProfit").val()
       }
-      if(newMoney){
+      if (newMoney) {
         PostCreateRequest(money)
-      }
-      else{
+      } else {
         PostEditRequest(money)
       }
       $("#createModal").modal("hide")
@@ -250,17 +277,16 @@
         data,
         status
       ) {
-        
-          window.location.reload()
-        
-      })
-    }
-    async function PostEditRequest(money){
-      $.post("http://localhost:30000/api/money/edit",money,function(data,status){
         window.location.reload()
       })
     }
-
-
+    async function PostEditRequest(money) {
+      $.post("http://localhost:30000/api/money/edit", money, function(
+        data,
+        status
+      ) {
+        window.location.reload()
+      })
+    }
   </script>
 </html>
